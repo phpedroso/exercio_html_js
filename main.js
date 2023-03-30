@@ -1,44 +1,39 @@
-const form=document.getElementById('form-deposito');
-const nomeBeneficiario = document.getElementById('nome-beneficiario');
+const form=document.getElementById('form-validar');
+const campoA=document.getElementById('campo-a');
+const campoB=document.getElementById('campo-b');
+
 let formEValido = false;
 
-function validaNome(nomeCompleto) {
-    const nomeComoArray = nomeCompleto.split(' ');
-    return nomeComoArray.length >=2;
+function validaCampos() {
+    if (campoB.value > campoA.value) {
+        return formEValido=true;
+       
+    } else {
+        return formEValido=false;
+    };
 }
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const numeroContaBeneficiario = document.getElementById('numero-conta');
-    const valorDeposito = document.getElementById('valor-deposito');
-    const desCricao = document.getElementById('descricao');
-    const mensagemSucesso = `Montante de: <b>${valorDeposito.value}</b> depositado para o cliente: <b>${nomeBeneficiario.value}</b> - conta: <b>${numeroContaBeneficiario.value}</b>`;
+    validaCampos();
 
-    formEValido = validaNome(nomeBeneficiario.value)
     if (formEValido)  {
-        const containerMensagemSucesso = document.querySelector('.success-message');
-        containerMensagemSucesso.innerHTML = mensagemSucesso;
-        containerMensagemSucesso.style.display='block';
-
-        nomeBeneficiario.value='';
-        numeroContaBeneficiario.value='';
-        valorDeposito.value='';
-        desCricao.value='';
+        const mensagem = `Valor do campo B (${campoB.value}) é maior que o valor do campo A (${campoA.value})`;
+        const containerMensagem = document.querySelector('.system-message');
+        containerMensagem.innerHTML = mensagem;
+        containerMensagem.style.display='block';
+        containerMensagem.style.background='#27ae60';
+        campoA.value='';
+        campoB.value='';
     } else {
-        nomeBeneficiario.style.border='1px solid red';
-        document.querySelector('.error-message').style.display='block';
-    }
- })
+        const mensagem = `Valor do campo A (${campoA.value}) é maior ou igual ao valor do campo B (${campoB.value})`;
+        const containerMensagem = document.querySelector('.system-message');
+        containerMensagem.innerHTML = mensagem;
+        containerMensagem.style.display='block';
+        containerMensagem.style.background='red';
+        campoA.value='';
+        campoB.value='';
 
- nomeBeneficiario.addEventListener('keyup', function(e) {
-    console.log(e.target.value);
-    formEValido = validaNome(e.target.value);
-    if (!formEValido)  {
-        nomeBeneficiario.classList.add=('error');
-        document.querySelector('.error-message').style.display='block';
-    } else {
-        nomeBeneficiario.classList.remove=('error');
-        document.querySelector('.error-message').style.display='none';
     }
  });
